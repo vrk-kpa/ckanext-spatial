@@ -93,8 +93,7 @@ class SpatialMetadata(p.SingletonPlugin):
         template directory for all the spatial extensions
         '''
         tk.add_template_directory(config, '../templates')
-        tk.add_public_directory(config, '../public')
-        tk.add_resource('../assets', 'ckanext-spatial')
+        tk.add_resource('../public', 'ckanext-spatial')
 
         # Add media types for common extensions not included in the mimetypes
         # module
