@@ -27,23 +27,18 @@ def get_srid(crs):
 def normalize_bbox(bbox_values):
     """
     Ensures a bbox is expressed in a standard dict
-
     bbox_values may be:
            a string: "-4.96,55.70,-3.78,56.43"
            or a list [-4.96, 55.70, -3.78, 56.43]
            or a list of strings ["-4.96", "55.70", "-3.78", "56.43"]
-
     ordered as MinX, MinY, MaxX, MaxY.
-
     Returns a dict with the keys:
-
        {
             "minx": -4.96,
             "miny": 55.70,
             "maxx": -3.78,
             "maxy": 56.43
         }
-
     If there are any problems parsing the input it returns None.
     """
 
@@ -69,16 +64,13 @@ def fit_bbox(bbox_dict):
     """
     Ensures that all coordinates in a bounding box
     fall within -180, -90, 180, 90 degrees
-
     Accepts a dict with the following keys:
-
        {
             "minx": -4.96,
             "miny": 55.70,
             "maxx": -3.78,
             "maxy": 56.43
         }
-
     """
 
     def _adjust_longitude(value):
@@ -90,22 +82,33 @@ def fit_bbox(bbox_dict):
                 value = -360 + value
         return value
 
-    bbox - bounding box dict
+    def _adjust_latitude(value):
+        if value < -90 or value > 90:
+            value = value % 180
+            if value < -90:
+                value = 180 + value
+            elif value > 90:
+                value = -180 + value
+        return value
 
-    Returns a query object of PackageExtents, which each reference a package
-    by ID.
-    '''
+    return {
+        "minx": _adjust_longitude(bbox_dict["minx"]),
+        "maxx": _adjust_longitude(bbox_dict["maxx"]),
+        "miny": _adjust_latitude(bbox_dict["miny"]),
+        "maxy": _adjust_latitude(bbox_dict["maxy"]),
+    }
 
-    input_geometry = _bbox_2_wkt(bbox, srid)
 
 def fit_linear_ring(lr):
 
-def bbox_query_ordered(bbox, srid=None):
-    '''
-    Performs a spatial query of a bounding box. Returns packages in order
-    of how similar the data\'s bounding box is to the search box (best first).
+    bbox = {
+        "minx": lr[0][0],
+        "maxx": lr[2][0],
+        "miny": lr[0][1],
+        "maxy": lr[2][1],
+    }
 
-    bbox - bounding box dict
+    bbox = fit_bbox(bbox)
 
     return [
         (bbox["minx"], bbox["maxy"]),
