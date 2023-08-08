@@ -1,11 +1,17 @@
+leaflet_js:
+  filter: rjsmin
+  output: ckanext-spatial/%(version)s_leaflet.js
+  contents:
+    - js/vendor/leaflet/1.9.3/leaflet.js
+
 dataset_map_js:
   filter: rjsmin
   output: ckanext-spatial/%(version)s_dataset_map.js
   extra:
     preload:
       - base/main
+      - ckanext-spatial/leaflet_js
   contents:
-    - js/vendor/leaflet/1.9.3/leaflet.js
     - js/common_map.js
     - js/dataset_map.js
 
@@ -22,8 +28,8 @@ spatial_query_js:
   extra:
     preload:
       - base/main
+      - ckanext-spatial/leaflet_js
   contents:
-    - js/vendor/leaflet/1.9.3/leaflet.js
     - js/vendor/leaflet.draw/0.4.14/leaflet.draw.js
     - js/common_map.js
     - js/spatial_query.js
