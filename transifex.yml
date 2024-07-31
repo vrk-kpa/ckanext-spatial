@@ -1,0 +1,9 @@
+git:
+  filters:
+    - filter_type: file
+      file_format: PO
+      source_language: en
+      source_file: 'ckanext/spatial/i18n/ckanext-spatial.pot'
+      translation_files_expression: 'ckanext/spatial/i18n/<lang>/LC_MESSAGES/ckanext-spatial.po'
+
+
