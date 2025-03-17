@@ -1,5 +1,4 @@
 import logging
-import six
 import ckantoolkit as tk
 
 config = tk.config
@@ -42,7 +41,7 @@ def normalize_bbox(bbox_values):
     If there are any problems parsing the input it returns None.
     """
 
-    if isinstance(bbox_values, six.string_types):
+    if isinstance(bbox_values, str):
         bbox_values = bbox_values.split(",")
 
     if len(bbox_values) != 4:
