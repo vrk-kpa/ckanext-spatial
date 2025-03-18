@@ -1,6 +1,5 @@
 import re
-import six
-from six.moves.urllib.parse import urlparse, urlunparse, urlencode
+from urllib.parse import urlparse, urlunparse, urlencode
 
 import logging
 
@@ -75,22 +74,22 @@ class CSWHarvester(SpatialHarvester, SingletonPlugin):
                 if not isinstance(require_keywords, list):
                     raise ValueError('require_keywords must be a list')
                 for keyword in require_keywords:
-                    if not isinstance(keyword, six.text_type):
+                    if not isinstance(keyword, str):
                         raise ValueError('require_keyword values must be strings')
 
             require_in_abstract = source_config_obj.get('require_in_abstract', None)
             if require_in_abstract is not None:
-                if not isinstance(require_in_abstract, six.text_type):
+                if not isinstance(require_in_abstract, str):
                     raise ValueError('require_in_abstract must be string')
 
             identifier_schema = source_config_obj.get('identifier_schema', None)
             if identifier_schema is not None:
-                if not isinstance(identifier_schema, six.text_type):
+                if not isinstance(identifier_schema, str):
                     raise ValueError('identifier_schema must be string')
 
             esn = source_config_obj.get('esn', None)
             if esn is not None:
-                if not isinstance(esn, six.text_type):
+                if not isinstance(esn, str):
                     raise ValueError('esn must be string')
 
         except ValueError as e:
@@ -146,7 +145,7 @@ class CSWHarvester(SpatialHarvester, SingletonPlugin):
 
         except Exception as e:
             log.error('Exception: %s' % text_traceback())
-            self._save_gather_error('Error gathering the identifiers from the CSW server [%s]' % six.text_type(e), harvest_job)
+            self._save_gather_error('Error gathering the identifiers from the CSW server [%s]' % str(e), harvest_job)
             return None
 
         new = guids_in_harvest - guids_in_db
