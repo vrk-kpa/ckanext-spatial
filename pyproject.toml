@@ -51,4 +51,5 @@ Homepage = "http://okfn.org"
 [tool.setuptools.dynamic]
 version = {attr = "ckanext.spatial.__version__"}
 
-
+[tool.setuptools]
+packages = ["ckanext.spatial"]

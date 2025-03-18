@@ -163,7 +163,8 @@ class SpatialQuery(SpatialQueryMixin, p.SingletonPlugin):
         if qp:
             if not config.get("ckan.search.solr_allowed_query_parsers"):
                 config["ckan.search.solr_allowed_query_parsers"] = []
-            config["ckan.search.solr_allowed_query_parsers"].append(qp)
+            if qp not in config["ckan.search.solr_allowed_query_parsers"]:
+                config["ckan.search.solr_allowed_query_parsers"].append(qp)
 
     # IPackageController
 
