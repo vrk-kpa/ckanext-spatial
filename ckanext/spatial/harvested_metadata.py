@@ -58,9 +58,7 @@ class MappedXmlElement(MappedXmlObject):
         values = []
         for xpath in self.get_search_paths():
             elements = self.get_elements(tree, xpath)
-            values = self.get_values(elements)
-            if values:
-                break
+            values.extend(self.get_values(elements))
         return self.fix_multiplicity(values)
 
     def get_search_paths(self):
@@ -394,6 +392,7 @@ class ISOKeyword(ISOElement):
             name="keyword",
             search_paths=[
                 "gmd:keyword/gco:CharacterString/text()",
+                "gmd:keyword/gmx:Anchor/text()",
             ],
             multiplicity="*",
         ),
@@ -658,8 +657,12 @@ class ISODocument(MappedXmlDocument):
             search_paths=[
                 "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/"
                 "gmd:MD_Keywords/gmd:keyword/gco:CharacterString/text()",
+                "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/"
+                "gmd:MD_Keywords/gmd:keyword/gmx:Anchor/text()",
                 "gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/"
                 "gmd:MD_Keywords/gmd:keyword/gco:CharacterString/text()",
+                "gmd:identificationInfo/srv:SV_ServiceIdentification/gmd:descriptiveKeywords/"
+                "gmd:MD_Keywords/gmd:keyword/gmx:Anchor/text()",
             ],
             multiplicity="*",
         ),
@@ -669,6 +672,7 @@ class ISODocument(MappedXmlDocument):
             search_paths=[
                 "gmd:identificationInfo/srv:SV_ServiceIdentification/srv:keywords/"
                 "gmd:MD_Keywords/gmd:keyword/gco:CharacterString/text()",
+                "gmd:MD_Keywords/gmd:keyword/gmx:Anchor/text()",
             ],
             multiplicity="*",
         ),
