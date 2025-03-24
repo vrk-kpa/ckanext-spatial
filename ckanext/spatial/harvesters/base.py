@@ -459,6 +459,14 @@ class SpatialHarvester(HarvesterBase):
 
         extras['lineage'] = iso_values.get('lineage')
 
+        supported_highvalue_categories = set(p.toolkit.aslist(config.get('ckanext.spatial.harvest.highvalue_categories')))
+        if iso_values.get('highvalue-categories') and supported_highvalue_categories:
+            highvalue_categories = ({munge_tag(c) for c in iso_values['highvalue-categories']}
+                                    & supported_highvalue_categories)
+            if highvalue_categories:
+                package_dict['highvalue'] = True
+                package_dict['highvalue_category'] = list(highvalue_categories)
+
         # Add default_extras from config
         default_extras = self.source_config.get('default_extras', {})
         if default_extras:

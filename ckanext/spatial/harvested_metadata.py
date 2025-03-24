@@ -676,6 +676,14 @@ class ISODocument(MappedXmlDocument):
             ],
             multiplicity="*",
         ),
+        ISOElement(
+            name="highvalue-categories",
+            search_paths=[
+                "gmd:identificationInfo/gmd:MD_DataIdentification/gmd:descriptiveKeywords/"
+                "gmd:MD_Keywords/gmd:keyword/gmx:Anchor/@xlink:href",
+            ],
+            multiplicity="*"
+        ),
         ISOUsage(
             name="usage",
             search_paths=[
@@ -954,6 +962,7 @@ class ISODocument(MappedXmlDocument):
         self.infer_url(values)
         # Todo: Infer resources.
         self.infer_tags(values)
+        self.infer_highvalue_categories(values)
         self.infer_publisher(values)
         self.infer_contact(values)
         self.infer_contact_email(values)
@@ -1005,6 +1014,14 @@ class ISODocument(MappedXmlDocument):
                 if item not in tags:
                     tags.append(item)
         values['tags'] = tags
+
+    def infer_highvalue_categories(self, values):
+        from .highvalue_categories import url_title_map
+        highvalue_categories = set(values['highvalue-categories'])
+        highvalue_category_titles = [url_title_map[url]
+                                     for url in highvalue_categories
+                                     if url in url_title_map]
+        values['highvalue-categories'] = highvalue_category_titles
 
     def infer_publisher(self, values):
         value = ''
