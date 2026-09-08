@@ -111,10 +111,9 @@ class CSWHarvester(SpatialHarvester, SingletonPlugin):
             self._save_gather_error('Error contacting the CSW server: %s' % e, harvest_job)
             return None
 
-        query = model.Session.query(HarvestObject.guid, HarvestObject.package_id). \
-            filter(HarvestObject.harvest_source_id == harvest_job.source.id).\
-            filter(HarvestObject.current == True) # noqa
-
+        query = model.Session.query(HarvestObject.guid, HarvestObject.package_id).\
+                                    filter(HarvestObject.current==True).\
+                                    filter(HarvestObject.harvest_source_id==harvest_job.source.id)
         guid_to_package_id = {}
 
         for guid, package_id in query:
@@ -263,7 +262,7 @@ class CSWHarvester(SpatialHarvester, SingletonPlugin):
             # Save the fetch contents in the HarvestObject
             # Contents come from csw_client already declared and encoded as utf-8
             # Remove original XML declaration
-            content = re.sub(r'<\?xml(.*)\?>', '', record['xml'])
+            content = re.sub('<xml(.*)>', '', record['xml'])
 
             harvest_object.content = content.strip()
             harvest_object.save()
